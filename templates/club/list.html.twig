@@ -1,0 +1,55 @@
+
+<table border="1">
+    <tr>
+        <th>Ref</th>
+        <th>Titre</th>
+        <th>Description</th>
+        <th>Nombre_Participants</th>
+    </tr>
+
+{% if listFormation is empty %}
+    <h6>Le tableau est vide </h6>
+{% else %}
+    
+ {% for f in listFormation %}
+    <tr>
+    {% if f.Description == "theorique" %}
+        <td>{{ f.ref }}</td>    
+        <td>{{ f.Titre }}</td>
+        <td>{{ f.Description }}</td>
+        <td>{{ f.nb_participants }}</td>
+        <td>
+        <a>{% if f.nb_participants == 0 %}
+            <a href="{{ path('name_club',{'name':f.Titre})}}">Participer</a>
+           {% else %}
+            Complet
+           {% endif %}
+        </td>
+    
+         
+    </tr>
+    {% endif %}
+ {% endfor %}
+{% endif %}
+</table>
+
+<h3 style="color: blue"> 4. Nombre de formation = {{listFormation |length }}</h3>
+
+{% set max = 0 %}
+
+    {% for i in listFormation %}
+    {% set max = max(i.nb_participants, max) %}
+    {% endfor %}
+    {% for j in listFormation %}
+    {% if j.nb_participants==max %}
+    <h3 style="color:red">6. le titre de la formation ayant le plus grand nombre de participants est : {{ j.Titre}}
+    {% endif %}
+    {% endfor %}
+
+{% set somme = 0 %}
+ {% for k in listFormation %}
+ {% set somme = somme+ k.nb_participants %}
+ {% endfor %}
+<h3 style="color:green">7. Le nombre de participants est :{{somme}}
+
+

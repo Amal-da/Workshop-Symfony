@@ -16,7 +16,7 @@ class ClasseController extends AbstractController
         ]);
     }
     //message simple 
-     #[Route('/add', name: 'add_élève')]
+     #[Route('/adds', name: 'adds_élève')]
      public function addclasse()
      {
       return new Response("Classe 3A31");
@@ -30,10 +30,10 @@ class ClasseController extends AbstractController
     }
 
     //Interface
-    #[Route('/list', name: 'list_élève')]
-    public function list()
+    #[Route('/listss', name: 'list_élève')]
+    public function lister()
     {
-        return $this->render("classe/list.html.twig");
+        return $this->render("classe/lists.html.twig");
     } 
 
 }
