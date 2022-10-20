@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClassRoomRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClassRoomRepository::class)]
@@ -18,6 +20,14 @@ class ClassRoom
 
     #[ORM\Column]
     private ?int $NbrStudent = null;
+
+    #[ORM\OneToMany(mappedBy: 'classRoom', targetEntity: Student::class)]
+    private Collection $Student;
+
+    public function __construct()
+    {
+        $this->Student = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -47,4 +57,39 @@ class ClassRoom
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Student>
+     */
+    public function getStudent(): Collection
+    {
+        return $this->Student;
+    }
+
+    public function addStudent(Student $student): self
+    {
+        if (!$this->Student->contains($student)) {
+            $this->Student->add($student);
+            $student->setClassRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStudent(Student $student): self
+    {
+        if ($this->Student->removeElement($student)) {
+            // set the owning side to null (unless already changed)
+            if ($student->getClassRoom() === $this) {
+                $student->setClassRoom(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /*public function __toString()
+    {
+        return (string)$this->getName();
+    }*/
 }

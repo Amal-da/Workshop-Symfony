@@ -5,7 +5,11 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\StudentRepository; 
+use App\Repository\StudentRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Student;
+use App\Form\StudentType;
+use Symfony\Component\HttpFoundation\Request; 
 class StudentController extends AbstractController
 {
     #[Route('/student', name: 'app_student')]
@@ -21,4 +25,29 @@ class StudentController extends AbstractController
      {   $Students=$repository->findAll();
          return $this->render("Student/Students.html.twig",array("tabStudents"=>$Students));
      }
+
+     #[Route('/addstudentForm', name: 'addstudentForm')]
+  public function addForm(Request  $request,ManagerRegistry $doctrine)
+  {
+      $Students= new  Student();
+      $form= $this->createForm(StudentType::class,$Students);
+      $form->handleRequest($request) ;
+      if($form->isSubmitted()){
+           $em= $doctrine->getManager();
+           $em->persist($Students);
+           $em->flush();
+           return  $this->redirectToRoute("addstudentForm");
+       }
+      return $this->renderForm("student/adds.html.twig",array("FormStudent"=>$form));
+  }
+
+  #[Route('/removstudent/{ref}', name: 'remove_student')]
+  public function remove(ManagerRegistry $doctrine,$ref,StudentRepository $repository)
+  {
+      $student= $repository->find($ref);
+      $em= $doctrine->getManager();
+      $em->remove($student);
+      $em->flush();
+      return $this->redirectToRoute("addstudentForm");
+  }
 }
