@@ -4,3 +4,24 @@ Ref: {{f.ref}}
 Username: {{f.Username}}
 <br>
 {% endfor %}
+
+<h3>Sort Students</h3>
+{% for f in sortstudent %}
+    Ref: {{f.ref}}
+    <br>
+    Username: {{f.Username}}
+    <br>
+    Classroom: {{f.classRoom.name}}
+    <br>
+{% endfor %}
+
+<h3>Top Students</h3>
+{% for f in topstudent %}
+    <br>
+    Username: {{f.Username}}
+    <br>
+    Moyenne: {{f.moyenne}}
+    <br>
+    <br>
+
+{% endfor %}

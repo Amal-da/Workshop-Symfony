@@ -6,6 +6,7 @@ use App\Entity\Student;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+
 /**
  * @extends ServiceEntityRepository<Student>
  *
@@ -38,6 +39,38 @@ class StudentRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    //jdida
+    public function sortByRef()
+    {
+        $qb=$this->createQueryBuilder('s')
+            ->orderBy('s.ref','DESC');
+        return $qb->getQuery()
+            ->getResult();
+    }
+    //
+
+    public function topStudent()//bel dql
+    {
+       $em=$this->getEntityManager();
+       $query=$em
+           ->createQuery("SELECT s FROM APP\ENTITY\Student s 
+           WHERE s.moyenne >=15");
+
+        return $query->getResult();
+
+    }
+    //join
+    public function getStudentByClassroom($id)
+    {
+       $qb=$this->createQueryBuilder('s')
+           ->join('s.classRoom','c')
+           ->addSelect('c')
+           ->where('c.id=:id')
+           ->setParameter('id',$id);
+       return $qb->getQuery()->getResult();
+
+    }
+
 
 //    /**
 //     * @return Student[] Returns an array of Student objects

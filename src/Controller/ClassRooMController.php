@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\StudentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -75,4 +76,13 @@ class ClassRooMController extends AbstractController
       $em->flush();
       return $this->redirectToRoute("addclassroomForm");
   }
+  //getStudentByClassroom
+    #[Route('/showstudent/{id}', name: 'show_classroom')]
+    public function studentt ($id,ClassRoomRepository $repository,StudentRepository $repo)
+    {
+        $classroom= $repository->find($id);
+        $students= $repo->getStudentByClassroom($id);
+        return $this->renderForm("class_roo_m/classroom.html.twig",array("classroom"=>$classroom,
+            "students"=>$students));
+    }
 }

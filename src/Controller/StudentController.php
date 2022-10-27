@@ -20,17 +20,17 @@ class StudentController extends AbstractController
         ]);
     }
      //bd 
-     #[Route('/Students', name: 'app_Students')]
+    /* #[Route('/Students', name: 'app_Students')]
      public function listStudent (StudentRepository $repository)
      {   $Students=$repository->findAll();
          return $this->render("Student/Students.html.twig",array("tabStudents"=>$Students));
-     }
+     }*/
 
      #[Route('/addstudentForm', name: 'addstudentForm')]
   public function addForm(Request  $request,ManagerRegistry $doctrine)
   {
       $Students= new  Student();
-      $form= $this->createForm(StudentType::class,$Students);
+      $form= $this->createForm(StudentType::class,$Students);//,$students athika lel ajout w update
       $form->handleRequest($request) ;
       if($form->isSubmitted()){
            $em= $doctrine->getManager();
@@ -50,4 +50,15 @@ class StudentController extends AbstractController
       $em->flush();
       return $this->redirectToRoute("addstudentForm");
   }
+  //bara lel repositery
+    #[Route('/Students', name: 'app_Students')]
+    public function listStudent (StudentRepository $repository)
+    {   $Students=$repository->findAll();
+        $Student=$repository->sortByRef();
+        $topstudent=$repository->topStudent();
+        return $this->render("Student/Students.html.twig",array("tabStudents"=>$Students,
+        "sortstudent"=>$Student,
+            "topstudent"=>$topstudent
+        ));
+    }
 }

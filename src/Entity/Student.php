@@ -19,6 +19,9 @@ class Student
     #[ORM\JoinColumn(onDelete:"CASCADE")] //fazet l delete mtaa clé etran
     private ?ClassRoom $classRoom = null;
 
+    #[ORM\Column]
+    private ?float $moyenne = null;
+
 
     public function getRef(): ?string
     {
@@ -52,6 +55,18 @@ class Student
     public function setClassRoom(?ClassRoom $classRoom): self
     {
         $this->classRoom = $classRoom;
+
+        return $this;
+    }
+
+    public function getMoyenne(): ?float
+    {
+        return $this->moyenne;
+    }
+
+    public function setMoyenne(float $moyenne): self
+    {
+        $this->moyenne = $moyenne;
 
         return $this;
     }

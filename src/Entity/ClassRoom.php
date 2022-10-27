@@ -90,6 +90,6 @@ class ClassRoom
 
     /*public function __toString()
     {
-        return (string)$this->getName();
+        return (string)$this->getName(); //sinon fel twig nforciw naamlou f.classroom.name
     }*/
 }
